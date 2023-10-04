@@ -1,9 +1,9 @@
-'use client';
-
+'use client'
 import React, { useState } from 'react';
 import type { DrawerProps } from 'antd';
-import { Button, Drawer, } from 'antd';
+import { Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
+import Barchart from '../barchart/barchart';
 
 
 export default function Page() {
@@ -35,7 +35,7 @@ export default function Page() {
                 <p>Some contents...</p>
             </Drawer>
             <div className="container mx-auto">
-                asdasdasd
+                <Barchart />
             </div>
         </>
     )
