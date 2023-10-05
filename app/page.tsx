@@ -2,27 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import Login from './login/page';
-import Page from './jobs/page';
-import { Button, notification, Space } from 'antd';
-import { data } from 'autoprefixer';
-
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
-
+import Page from './Home/page';
 
 export default function Home() {
 
   const [userName, setuserName] = useState<any>('');
   const [password, setpassword] = useState<any>('');
   const [isAuthenticated, setisAuthenticated] = useState(false);
-  const [isRemember, setisRemember] = useState(false);
-  const [api, contextHolder] = notification.useNotification();
-
-  const openNotificationWithIcon = (type: NotificationType, message: string) => {
-    api[type]({
-      message: 'Notification',
-      description: message,
-    });
-  };
 
 
   useEffect(() => {
@@ -40,7 +26,6 @@ export default function Home() {
 
   return (
     <>
-      {contextHolder}
       {isAuthenticated ? <Page /> :
         <Login setpassword={setpassword} setuserName={setuserName} checkIsVaildUser={checkIsVaildUser} />
       }

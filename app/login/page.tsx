@@ -1,5 +1,5 @@
 'use client';
-import React from 'react'
+import React, { useState } from 'react'
 import { message } from 'antd';
 
 export default function Login({ setuserName, setpassword, checkIsVaildUser }: any) {
@@ -8,6 +8,43 @@ export default function Login({ setuserName, setpassword, checkIsVaildUser }: an
   const info = () => {
     messageApi.info('Please Contact Admin');
   };
+
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [userNameError, setUserNameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    // Reset error messages
+    setUserNameError('');
+    setPasswordError('');
+
+    // Validation logic
+    if (!userName) {
+      setUserNameError('Username is required.');
+    } else if (!/^[a-zA-Z0-9]+$/.test(userName)) {
+      setUserNameError('Username should not contain special characters.');
+    }
+
+    if (!password) {
+      setPasswordError('Password is required.');
+    } else if (password.length < 3) {
+      setPasswordError('Password should have at least 3 characters.');
+    }
+
+    // If there are no errors, you can proceed with further actions (e.g., API request)
+    if (userName && password) {
+      debugger
+      setuserName(userName)
+      setpassword(password)
+      checkIsVaildUser()
+    }
+  };
+
+
+
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
       {contextHolder}
@@ -17,17 +54,26 @@ export default function Login({ setuserName, setpassword, checkIsVaildUser }: an
           alt="Sample image" />
       </div>
       <div className="md:w-1/3 max-w-sm">
-        <input onChange={(value) => setuserName(value.target.value)} className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded" type="text" placeholder="Username / Email Address" />
-        <input onChange={(value) => setpassword(value.target.value)} className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4" type="password" placeholder="Password" />
-        <div className="mt-4 flex justify-between font-semibold text-sm">
-          <a className="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4" href="#" onClick={info}>{'Forgot Password?'}</a>
-        </div>
-        <div className="text-center md:text-left">
-          <button className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider" onClick={() => checkIsVaildUser()}>{'Login'}</button>
-        </div>
-        <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left" >
-          {`Don't have an account?`} <a className="text-red-600 hover:underline hover:underline-offset-4" onClick={info}>{'Register'}</a>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <input
+            onChange={(e) => setUserName(e.target.value)}
+            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
+            type="text"
+            placeholder="Username / Email Address"
+          />
+          {userNameError && <p className="text-red-500">{userNameError}</p>}
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
+            type="password"
+            placeholder="Password"
+          />
+          {passwordError && <p className="text-red-500">{passwordError}</p>}
+          <button type="submit" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+            Log In
+          </button>
+        </form>
+
       </div>
     </section>
   )
