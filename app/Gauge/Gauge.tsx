@@ -1,12 +1,28 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Gauge } from '@ant-design/plots';
 
 export default function Gaugecomponent() {
 
-    const [percentValue, setpercentValue] = useState(0.7)
+    const [percentValue, setpercentValue] = useState(0.4);
+    let value: number = 0.4;
 
-    const config = {
+    const graphRef: any = useRef(null);
+    useEffect(() => {
+        if (graphRef.current) {
+            let data = 0.7;
+            const interval = setInterval(() => {
+                if (data >= 1.5) {
+                    clearInterval(interval);
+                }
+
+                data += 0.005;
+                graphRef.current.changeData(data > 1 ? data - 1 : data);
+            }, 100);
+        }
+    }, [graphRef]);
+
+    const config: any = {
         percent: percentValue,
         range: {
             color: '#30BF78',
@@ -25,7 +41,7 @@ export default function Gaugecomponent() {
         },
         axis: {
             label: {
-                formatter(v) {
+                formatter(v: number) {
                     return Number(v) * 100;
                 },
             },
@@ -35,30 +51,17 @@ export default function Gaugecomponent() {
         },
         statistic: {
             content: {
-                formatter: ({ percent }) => `Rate: ${(percent * 100).toFixed(0)}%`,
+                formatter: ({ percent }: any) => `Rate: ${(percent * 100).toFixed(0)}%`,
                 style: {
                     color: 'rgba(0,0,0,0.65)',
                     fontSize: 32,
                 },
             },
         },
+        onReady: (plot: any) => {
+            graphRef.current = plot;
+        },
     };
-
-    function getRandomPercent(min: number, max: number) {
-        return Math.random() * (max - min) + min;
-    }
-
-    // Function to update the percent property in config
-    function updatePercent() {
-        setpercentValue(getRandomPercent(0.4, 0.9));
-        // Replace this with your code to update your chart or display
-        console.log(`Updated percent to ${config.percent}`);
-    }
-
-    // Update the percent property every 2 seconds
-    setInterval(updatePercent, 2000);
-
-
 
 
     return (

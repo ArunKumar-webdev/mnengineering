@@ -26,17 +26,20 @@ export default function Login({ setuserName, setpassword, checkIsVaildUser }: an
       setUserNameError('Username is required.');
     } else if (!/^[a-zA-Z0-9]+$/.test(userName)) {
       setUserNameError('Username should not contain special characters.');
+    }else if(userName !== 'admin'){
+      alert('Invalid Credentials');
     }
 
     if (!password) {
       setPasswordError('Password is required.');
     } else if (password.length < 3) {
       setPasswordError('Password should have at least 3 characters.');
+    } else if(password !== 'admin'){
+      alert('Invalid Credentials');
     }
-
+    
     // If there are no errors, you can proceed with further actions (e.g., API request)
     if (userName && password) {
-      debugger
       setuserName(userName)
       setpassword(password)
       checkIsVaildUser()

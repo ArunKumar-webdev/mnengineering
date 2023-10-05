@@ -18,7 +18,6 @@ export default function Barchart() {
                     "城市": "City",
                     "销售额": "Sales"
                 };
-                debugger
                 let data: any = [];
                 data = json.map((item: any, index: number) => {
                     const newItem: any = {};
@@ -39,7 +38,7 @@ export default function Barchart() {
                 console.log('fetch data failed', error);
             });
     };
-    const config = {
+    const config: any = {
         data,
         xField: 'City',
         yField: 'Sales',
